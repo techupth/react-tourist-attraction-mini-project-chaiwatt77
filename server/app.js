@@ -13,6 +13,13 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.get('/post/:id', (req, res) => {
+  const results = trips.filter((post)=>post.eid===req.params.id.toString());
+  res.json({
+    data: results,
+  });
+})
+
 app.get("/trips", (req, res) => {
   let keywords = req.query.keywords;
 
@@ -21,7 +28,7 @@ app.get("/trips", (req, res) => {
       message: "Please send keywords parameter in the URL endpoint",
     });
   }
-
+  keywords = keywords.replace(" ", "");
   const regexKeywords = keywords.split(" ").join("|");
   const regex = new RegExp(regexKeywords, "ig");
   const results = trips.filter((trip) => {
